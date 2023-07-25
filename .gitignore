@@ -1,1 +1,5 @@
 /zds-venv-erp
+
+# Git ignore database files and yaml
+/erp/database.yaml
+/erp/db.sqlite3
