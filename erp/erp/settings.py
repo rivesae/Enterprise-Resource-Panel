@@ -33,7 +33,10 @@ DEBUG = env('DEBUG', default=False)
 # with open(os.path.join(BASE_DIR, 'secret.yaml')) as config_file:
 #     config = yaml.load(config_file, Loader=yaml.FullLoader)
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [
+    'app.ziondiagnosticssolutions.com', # For production; can't seem to include as environment variable
+    '127.0.0.1',                        # For development; can't seem to include as environment variable
+                ]
 
 # Application definition
 
@@ -99,10 +102,9 @@ WSGI_APPLICATION = 'erp.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-# DATABASES = config['DATABASES']
 DATABASES = {
     'default': {
-        'ENGINE': env('DATABASE_ENGINE'),  # Use MySQL as the database engine
+        'ENGINE': env('DATABASE_ENGINE'),     # Use MySQL as the database engine
         'NAME': env('DATABASE_NAME'),         # Get DATABASE_NAME from the environment variable
         'USER': env('DATABASE_USER'),         # Get DATABASE_USER from the environment variable
         'PASSWORD': env('DATABASE_PASSWORD'), # Get DATABASE_PASSWORD from the environment variable
