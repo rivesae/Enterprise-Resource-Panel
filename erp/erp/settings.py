@@ -12,26 +12,28 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import yaml
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env()
+environ.Env.read_env('secret.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x8lp+wl02h0r%f7yfeoau%_shv%rlcr2@8rzlh2dhj8^)67jgo'
+SECRET_KEY = env('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default=False)
 
-with open(os.path.join(BASE_DIR, 'secret.yaml')) as config_file:
-    config = yaml.load(config_file, Loader=yaml.FullLoader)
+# with open(os.path.join(BASE_DIR, 'secret.yaml')) as config_file:
+#     config = yaml.load(config_file, Loader=yaml.FullLoader)
 
-ALLOWED_HOSTS = config['ALLOWED_HOSTS']
-
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Application definition
 
@@ -97,7 +99,17 @@ WSGI_APPLICATION = 'erp.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-DATABASES = config['DATABASES']
+# DATABASES = config['DATABASES']
+DATABASES = {
+    'default': {
+        'ENGINE': env('DATABASE_ENGINE'),  # Use MySQL as the database engine
+        'NAME': env('DATABASE_NAME'),         # Get DATABASE_NAME from the environment variable
+        'USER': env('DATABASE_USER'),         # Get DATABASE_USER from the environment variable
+        'PASSWORD': env('DATABASE_PASSWORD'), # Get DATABASE_PASSWORD from the environment variable
+        'HOST': env('DATABASE_HOST'),         # Get DATABASE_HOST from the environment variable
+        'PORT': env('DATABASE_PORT'),         # Get DATABASE_PORT from the environment variable
+    }
+}
 
 
 # Password validation

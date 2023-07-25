@@ -3,4 +3,5 @@
 # Git ignore database files and yaml
 /erp/secret.yaml
 /erp/db.sqlite3
+/erp/secret.env
 
