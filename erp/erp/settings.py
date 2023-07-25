@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import yaml
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,12 +93,10 @@ WSGI_APPLICATION = 'erp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+with open(os.path.join(BASE_DIR, 'database.yaml')) as config_file:
+    config = yaml.load(config_file, Loader=yaml.FullLoader)
+
+DATABASES = config['DATABASES']
 
 
 # Password validation

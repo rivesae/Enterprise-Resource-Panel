@@ -4,5 +4,6 @@ Django==3.2.13
 django-filter==23.2
 fontawesomefree==6.4.0
 pytz==2023.3
+PyYAML==6.0.1
 sqlparse==0.4.4
 typing_extensions==4.7.1
