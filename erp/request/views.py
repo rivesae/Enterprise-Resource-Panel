@@ -11,13 +11,12 @@ from django.template.loader import get_template
 # Importing forms
 from .forms import OrderForm, ItemForm
 
-import pytz
+from datetime import timedelta
 
 # Imported models
 from .models import RequestItem, RequestOrder
 from distributor.models import Distributor, Item, Brand
 
-now = timezone.localtime()
 
 def index(request):
     orders = RequestOrder.objects.filter(active=1)
@@ -50,6 +49,10 @@ def redirect_entry(request, id):
     for main_req in req_order:
         brand_get = Brand.objects.filter(distributor_id=main_req.distributor_id)
         if request.method == 'POST':
+            
+            tz_error = timezone.localtime(timezone.now())
+            now = tz_error + timedelta(hours=8)
+            
             item_value = request.POST['item_value']
             qty_value = request.POST['qty_value']
             cost_value = request.POST['cost_value']
@@ -59,6 +62,7 @@ def redirect_entry(request, id):
                                           cost=cost_value,
                                           package=package,
                                           request_order_id=id,
+                                          date_created=now,
                                           )
             target_instance.save()
     for item in items:
@@ -67,8 +71,6 @@ def redirect_entry(request, id):
     amount = round(sum(item.subtotal for item in items), 2)
     discount_amount = round((amount * main_req.discount), 2)
     total_amount = amount - discount_amount
-    local_tz = pytz.timezone('Asia/Manila')
-    print(local_tz.zone)
 
     context = {
         'items': items,

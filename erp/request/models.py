@@ -5,8 +5,6 @@ from core.models import CustomUser
 # Importation of models from 'distributor' app
 from distributor.models import Distributor, Item
 
-now = timezone.localtime()
-
 # Create your models here.
 
 # For Purchase Order creation, linked with 'distributor' app
@@ -49,4 +47,4 @@ class RequestItem(models.Model):
     request_order = models.ForeignKey(RequestOrder, on_delete=models.CASCADE, null=True)
     active = models.BooleanField(default=True)
     delete_date = models.DateTimeField(null=True)
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField()
