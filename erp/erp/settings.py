@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-x8lp+wl02h0r%f7yfeoau%_shv%rlcr2@8rzlh2dhj8^)67jgo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+with open(os.path.join(BASE_DIR, 'database.yaml')) as config_file:
+    config = yaml.load(config_file, Loader=yaml.FullLoader)
+
+ALLOWED_HOSTS = config['ALLOWED_HOSTS']
 
 
 # Application definition
@@ -93,8 +96,6 @@ WSGI_APPLICATION = 'erp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-with open(os.path.join(BASE_DIR, 'database.yaml')) as config_file:
-    config = yaml.load(config_file, Loader=yaml.FullLoader)
 
 DATABASES = config['DATABASES']
 
