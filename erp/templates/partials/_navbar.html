@@ -1,0 +1,21 @@
+<nav>
+      <ul class="nav-flex-justify">
+          <li>
+            <i class="fa-solid fa-bars move toggle-button" type="button" onclick="toggleSidebar()"></i><span class="media-700"><a href="/" class="logo-link">Zion Diagnostics Solutions</a></span>
+          </li>
+          <li class="nav-item">
+              <div class="dropdown">
+                <button type="button" class="edit" data-bs-toggle="dropdown">
+                  <span class="media-700">Welcome, {{ user.first_name }} {{ user.last_name }}</span><img src="https://blogtimenow.com/wp-content/uploads/2014/06/hide-facebook-profile-picture-notification.jpg" class="profile-pic">
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Messages</a></li>
+                  <li><a class="dropdown-item" href="#">Payslip</a></li>
+                  <li><a class="dropdown-item" href="{% url 'home:user_settings' %}">Settings </a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'home:logout' %}">Logout </a></li>
+                </ul>
+              </div>
+          </li>
+      </ul>
+</nav>

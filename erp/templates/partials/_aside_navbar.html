@@ -1,0 +1,88 @@
+<div>
+    <button class="dropdown-btn">Home 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="/">Overview</a>
+      <a href="#">Updates</a>
+    </div>
+    <button class="dropdown-btn">Reports
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="#">Liquidation</a>
+      <a href="#">Service</a>
+      <a href="#">Laboratory</a>
+    </div>
+    <button class="dropdown-btn">Inventory 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="{% url 'inventory:overview' %}">Overview</a>
+      <a href="#">Stocks</a>
+    </div>
+    <hr>
+    <button class="dropdown-btn">Customers 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="{% url 'customer:overview' %}">Overview</a>
+      <a href="#">Details</a>
+      <a href="#">Settlement</a>
+      <a href="#">Pricing</a>
+    </div>
+    <button class="dropdown-btn">Orders
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="#">Overview</a>
+      <a href="#">New Order</a>
+      <a href="#">Process</a>
+      <a href="#">Status</a>
+      <a href="#">Advance</a>
+    </div>
+      <button class="dropdown-btn">Distributors
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="{% url 'distrib:overview' %}">Overview</a>
+      <a href="#">Details</a>
+      <a href="#">Settlement</a>
+    </div>
+    <button class="dropdown-btn">Requests
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="{% url 'request:overview' %}">Records</a>
+      <a href="{% url 'request:create_entry' %}">New</a>
+    </div>
+    <button class="dropdown-btn">Transfers
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="#">Overview</a>
+      <a href="#">New</a>
+      <a href="#">Process</a>
+      <a href="#">Status</a>
+    </div>
+    <hr>
+    <button class="dropdown-btn">Peoples
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="{% url 'people:user_list' %}">Overview</a>
+      <a href="#">Applications</a>
+      <a href="#">Compensations</a>
+    </div>
+    <button class="dropdown-btn">Accounting
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a href="#">Overview</a>
+      <a href="#">Revenue</a>
+      <a href="#">Assets</a>
+      <a href="#">Liabilities</a>
+    </div>
+  
+    <a href="#contact">Contact</a>
+  </div>

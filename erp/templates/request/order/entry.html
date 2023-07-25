@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for order in req_order %}
+
+<div class="cxs-container">
+  <div class="row">
+    <span><button class="cxs-btn-stat cxs-btn-alert-overview" onclick="window.location.href='{% url 'request:overview' %}';"> Back to Overview </button>
+      <h4>Review of Purchase Order No: {{order.id}} </h4></span>
+  </div>
+  <div class="col-flex">
+      <div class="col-6">
+        <h5>{{order.distributor}}</h5>
+        <h6>{{order.distributor.address}}</h6>
+        <span>Document created: {{order.date_created}}</span>
+        {% endfor %}
+      </div>
+      <div class="col-6">
+        <div class="row-corrected">
+          <label for=""><span style="font-weight: bold;">Email addresses to send this document:</label><br>
+          <textarea name="" id="" class="email cxs-whole-input" placeholder="You may add multiple email address by separating each email addresses with comma."></textarea>
+        </div>
+        <div class="row-corrected">
+          <button class="cxs-btn-stat cxs-btn-alert-edit">Update email addresses</button>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+    {% if items %}
+    <table class="content-table">
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Code</th>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Package</th>
+          <th>Price</th>
+          <th>Subtotal</th>
+          <th>Added</th>
+          <th>Del</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in items %}
+        {% load humanize %}
+        <tr>
+          <td>{{x.item.brand}}</td>
+          <td>{{x.item.code}}</td>
+          <td>{{x.item}}</td>
+          <td>{{x.qty}}</td>
+          <td>{{x.package}}</td>
+          <td>₱ {{x.cost|intcomma}}</td>
+          <td>₱ {{x.subtotal|intcomma}}</td>
+          <td>{{x.date_created|naturaltime}}</td>
+          <td>
+          <form method="POST" action="{% url 'request:toggle_active' x.request_order_id x.id %}">
+            {% csrf_token %}
+            <button type="submit" class="inactive">
+                {% if item.active %}
+                {% else %}
+                <i class="fa-solid fa-xmark"></i>
+                {% endif %}
+            </button>
+        </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <span>No records yet.</span><br><br>
+    {% endif %}
+  </div>
+  <div class="col-flex">
+      <div class="col-4">
+        <form action="" method="POST" id="Selector">
+          {% csrf_token %}
+          {{select_item}}
+          <div class="row">
+            <span style="font-weight: bold;">Use the selection tool below to add items into the document:</span>
+          </div>
+          <div class="row">
+            <select class="custom-select mb-2 cxs-whole-input"
+                      name="brand_get"
+                      hx-get="{% url 'request:select_item' %}" 
+                      hx-trigger="change" 
+                      hx-target="#items"
+                      onclick="clear_item_cost()">
+                <option selected>Select a Brand</option>
+                {% for brand in brand_get %}
+                <option value="{{brand.pk}}">{{brand.name}}</option>
+                {% endfor %}
+              </select>
+          </div>
+          <div class="row" id="items">
+              {% include 'request/order/_partials/_select_item.html' %} 
+          </div>
+          <!-- Starts the field input -->
+          <div class="row" id="cost">
+              {% include 'request/order/_partials/_costing.html' %} 
+          </div>
+          <div class="row">
+            <!-- <input type="text" name="request_order_value" value="{{main_req.id}}" hidden> -->
+            <button type="submit" class="cxs-btn-stat cxs-btn-alert-edit">Add Item</button>
+          </div>
+          </form>
+      
+      </div>
+      <div class="col-4">
+        {% if items %}
+        {% for w in req_order %}
+        <form action="{% url 'request:add_remarks' w.id %}" method="POST">
+          {% csrf_token %}
+          <div class="row-corrected">
+            <label for=""><span style="font-weight: bold;">Add a remark to this document:</label><br>
+            {% if w.remarks is None %}
+              <textarea name="remarks" id="remarks" class="comment cxs-whole-input" placeholder="Type any remarks here. The remark will be printed along with the document."></textarea>
+            {% else %}
+            {% load custom_filters %}
+              <textarea name="remarks" id="remarks" class="comment cxs-whole-input" placeholder="">{{w.remarks|strip_unwanted_characters}}</textarea>
+            {% endif %}
+          </div>
+          <div class="row-corrected">
+            <button type="submit" class="cxs-btn-stat cxs-btn-alert-edit">Update Remark</button>
+          </div>
+        </form>
+        {% endfor %}
+        {% else %}
+        {% endif %}
+      </div>
+      <div class="col-4">
+        {% if items %}
+          <div class="row">
+            {% for order in req_order %}
+            <table class="content-table">
+              <tbody>
+                <tr>
+                  <td>Amount:</td>
+                  <td>₱ {{amount|intcomma}}</td>
+                </tr>
+                <tr>
+                  {% for percent in req_order %}
+                  <td>Discount @ <span id="percent"></span> :</td>
+                  <td class="discount">- ₱ {{discount_amount|intcomma}} </td>
+                            <!-- Percentage of order.discount  -->
+                            <script>
+                              function convertToPercentage(decimal) {
+                                var percentage = decimal * 100;
+                                return percentage.toFixed(2) + "%"; // Round to 2 decimal places
+                              }
+                            
+                              var decimalNumber = "{{percent.discount}}"; // Replace with your decimal number
+                              var percentage = convertToPercentage(decimalNumber);
+                              
+                              document.getElementById("percent").innerHTML = percentage;
+                            </script>
+                              <!-- endof Percentage of order.discount  -->
+                    {% endfor %}
+                </tr>
+                <tr class="total">
+                  <td>Total Amount:</td>
+                  <td>₱ {{total_amount|intcomma}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <form method="POST" action="{% url 'request:toggle_approve' order.id %}">
+            <div class="row">
+                {% csrf_token %}
+                <button class="cxs-btn-stat cxs-btn-alert-approve cxs-btn-big">Request for Approval</button>
+            </div>
+          </form>
+          <form method="POST" action="{% url 'request:toggle_deactivate' order.id %}">
+            <div class="row mt-2">
+                {% csrf_token %}
+                <button class="cxs-btn-stat cxs-btn-alert-warning cxs-btn-big">Delete Order</button>
+            </div>
+          </form>
+          {% endfor %}
+          {% else %}
+          {% endif %}
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

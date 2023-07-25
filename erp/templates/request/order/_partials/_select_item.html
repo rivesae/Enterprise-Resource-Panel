@@ -1,0 +1,11 @@
+<select class="custom-select mb-2 cxs-whole-input"
+        name="item_value"
+        hx-get="{% url 'request:costing' %}" 
+        hx-trigger="change" 
+        hx-target="#cost"
+        onclick="clear_cost()">
+  <option selected>Select first a Brand to choose your Item</option>
+  {% for z in select_item %}
+      <option value="{{z.pk}}">{{ z.name }}</option>
+  {% endfor %}
+</select>

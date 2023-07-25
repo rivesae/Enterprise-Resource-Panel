@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row mt-4">
+      <div class="col-xl-12">
+        <div class="main">
+          <h5>Create new Purchase Order</h5>
+          <p>Select a distributor to which you'd like to send your purchase order to, set the discount (if there are any), and select a date to when you'd like the order to start being delivered.</p>
+          <form action="" method="post">
+            {% csrf_token %}
+              {{form.as_table}}
+            <input type="submit">
+          </form>
+        </div>
+        <hr>
+        <div class="main">
+          <h5>Create a Request of Inventory Transfer</h5>
+          <p>Select a depot on where you'd like the inventory to came from, then select a date to when you'd like your request to be sent to you.</p>
+        </div>
+        <hr>
+        <div class="main">
+          <h5>Create a Request of Asset Transfer</h5>
+          <p>Select a Customer where an Asset is gonna be transferred to for use, then select a date of delivery.</p>
+        </div>
+        <hr>
+        <div class="main">
+          <h5>Create a Request of Parts Use</h5>
+          <p>Select parts that needed to be deployed for repair and service. Only applicable to machines that are under Assets.</p>
+        </div>
+        <hr>
+        <div class="main">
+          <h5>Create a Request of Consignment Inventory</h5>
+          <p>Select inventory to transfer to a Customer that are under consignment.</p>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

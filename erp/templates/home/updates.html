@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-md">
+      <div class="table-responsive"></div>
+      <h5>Server Updates</h5>
+      <p>Updates for the site application.</p>
+        <table class="content-table-nohead table-hover-content">
+            {% load humanize %}
+            <tbody>
+              {% for updates in update %}
+                <tr>
+                    <td>Version {{updates.version}}
+                        <span style="float:right;">Added {{updates.date_created|naturaltime}}</span></td>
+                </tr>
+                <tr>
+                    <td>{{updates.comment|safe}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

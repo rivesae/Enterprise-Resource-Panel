@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container content">
+  <div class="row mt-4">
+      <div class="col-xl-12">
+        <div class="main">
+          <h5>Request OVERVIEW</h5>
+
+          <div class="row">
+            <div class="col-md">
+              <div class="table-responsive"></div>
+                <table class="content-table table-hover-content">
+                  <thead>  
+                    <tr>
+                      <th>PO Number</th>
+                      <th>Distributor</th>
+                      <th>Update</th>
+                      <th>Action</th>
+                      <th>Other Information</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for x in orders %}
+                    {% load humanize %}
+                    <tr>
+                      <td>{{x.id}}</a></td>
+                      <td>{{x.distributor}}</td>
+                      {% if x.update is None %}
+                      <td>{{x.date_created|naturaltime}}</td>
+                      {% else %}
+                      <td>{{x.update|naturaltime}}</td>
+                      {% endif %}
+                      <td>
+                        {% if x.update is None %}
+                        <button class="cxs-btn-stat cxs-btn-alert-edit" onclick="window.location.href='{% url 'request:redirect_entry' x.id %}';">Edit</button>
+                        {% else %}
+                        <button class="cxs-btn-stat cxs-btn-alert-approve" onclick="window.location.href='{% url 'request:approve' x.id %}';">Approve</button>
+                        {% endif %}
+                      </td>
+                      <td>Created by: {{x.created.first_name}} {{x.created.last_name}}, Approved by: {{x.approved.first_name}} {{x.approved.last_name}} </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

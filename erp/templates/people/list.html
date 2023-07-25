@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md">
+      <div class="table-responsive"></div>
+      <h5>People Overview</h5>
+      <p>The quick brown fox jumps over the lazy dog.</p>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Address</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for info in user_list %}
+                <tr>
+                    <td>{{info.user}}</td>
+                    <td>{{info.user.email}}</td>
+                    <td>{{info.fname}}</td>
+                    <td>{{info.lname}}</td>
+                    <td>{{info.address}}</td>
+                    <td>{{info.user.is_active}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-******************" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+    transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+    width: 72px;
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 20px;
+}
+
+.nav-link {
+    padding: 10px;
+}
+
+main {
+    margin-left: 72px; /* Width of the collapsed sidebar */
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
+
+main.collapsed {
+    margin-left: 0;
+}
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <i class="navbar-toggler fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"></i>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Menu Item 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Menu Item 2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Menu Item 3</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Menu Item 4</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <!-- Your content here -->
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var sidebar = document.querySelector('.sidebar');
+var main = document.querySelector('main');
+var navbarToggler = document.querySelector('.navbar-toggler');
+
+navbarToggler.addEventListener('click', function () {
+    var isCollapsed = sidebar.classList.toggle('collapsed');
+    main.classList.toggle('collapsed');
+    
+    // Store the collapsed state in localStorage
+    localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
+});
+
+// Check the stored collapsed state on page load
+var storedCollapsed = localStorage.getItem('sidebarCollapsed');
+if (storedCollapsed === 'true') {
+    sidebar.classList.add('collapsed');
+    main.classList.add('collapsed');
+}
+
+    </script>
+</body>
+</html>

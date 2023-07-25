@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+        <div class="main">
+            {% if error_massage %}
+            <p class="alert alert-danger">
+                <strong>{{error_massage}}</strong>
+            </p>
+            {% endif %}
+            <div class="text-center">
+                <h5>Login Form</h5>
+            </div>
+            <form action="{% url 'home:process' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter username" class="form-control" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter password" class="form-control">
+                </div>
+                <button class="btn btn-success" type="submit">Login</button>
+            </form>
+        </div>
+
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-xl-12">
+            <div class="main">
+                {% load custom_filters %}
+            <h5>{{distrib.name}} ({{distrib.tin|tin_format}})</h5>
+            <p>{{distrib.address}}</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="table-responsive">
+                                {% if brands %}
+                            <table class="content-table">
+                                <thead>
+                                    <tr>
+                                        <th>Covered Brands</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                      <td>{% for brand in brands %} [{{brand.name}}], {% endfor %}</td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                                {% else %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-xl">
+                            <div class="table-responsive">
+                            <table class="content-table">
+                                <thead>
+                                    <tr>
+                                        <th>Search Tags</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            </div>
+                        </div>
+                    </div>
+                </br>
+                    <div class="row">
+                        <div class="col-xl">
+                            <div class="table-responsive">
+                                <form method="GET">
+                                    <div class="input-group z-index">
+                                        {{ search }}
+                                        <div class="input-group-append">
+                                            <button class="btn btn-success btn-search" type="submit">Search</button>
+                                        </div>
+                                    </div>
+                                </form>      
+                                {% if page_obj %}                      
+                            <table class="content-table" id="numberTable">
+                                <thead>
+                                    <tr>
+                                        <th>Brand</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Cost</th>
+                                        <th>Packaging</th>
+                                        <th>Conversion</th>
+                                        <th>Added</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Nested child and grandchild using set -->
+                                        {% for x in page_obj %}
+                                        {% load humanize %}
+                                            <tr>
+                                                <td>{{x.brand}}</td>
+                                                <td>{{x.code}}</td>
+                                                <td>{{x.name}}</td>
+                                                <td>₱{{x.cost|intcomma}}</td>
+                                                <td>{{x.package}}</td>
+                                                <td>{{x.max_conv|intcomma}}</td>
+                                                <td>{{x.date_created|naturaltime}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                  </tbody>
+                            </table>
+                                        <!-- Pagination of tables -->
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}
+                                    <li class="page-item"><a href="?page=1" class="page-link"> <i class="fa-solid fa-arrow-left-to-line"></i> First </a></li>
+                                    <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"><i class="fa-solid fa-arrow-left"></i> Previous </a></li>
+                                    {% endif %}
+                            
+                                    {% if page_obj.has_next %}
+                                    <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"> Next <i class="fa-solid fa-arrow-right"></i></a></li>
+                                    <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link"> Last <i class="fa-solid fa-arrow-right-to-line"></i></a></li>
+                                    {% endif %}
+                                </ul>
+                                Table will only show 10 items or less per page.
+                                {% else %}
+                            </br>
+                                No records found.
+                                {% endif %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
