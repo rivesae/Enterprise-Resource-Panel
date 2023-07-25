@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     
     'django.contrib.humanize', # Built-in Django, just need to be activated
     
-    # Django downloadable Modules (see requirements.txt)
+    # Django additional downloadable Modules (see requirements.txt)
     'fontawesomefree',
     'django_filters',
 ]
