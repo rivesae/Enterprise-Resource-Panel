@@ -5,3 +5,15 @@
 /erp/db.sqlite3
 /erp/secret.env
 
+# Ignore all __pycache__
+/erp/accounting/__pycache__
+/erp/analytic/__pycache__
+/erp/core/__pycache__
+/erp/customer/__pycache__
+/erp/distributor/__pycache__
+/erp/erp/__pycache__
+/erp/home/__pycache__
+/erp/inventory/__pycache__
+/erp/order/__pycache__
+/erp/people/__pycache__
+/erp/request/__pycache__
