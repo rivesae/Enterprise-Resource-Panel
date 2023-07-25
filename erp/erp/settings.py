@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-x8lp+wl02h0r%f7yfeoau%_shv%rlcr2@8rzlh2dhj8^)67jgo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-with open(os.path.join(BASE_DIR, 'database.yaml')) as config_file:
+with open(os.path.join(BASE_DIR, 'secret.yaml')) as config_file:
     config = yaml.load(config_file, Loader=yaml.FullLoader)
 
 ALLOWED_HOSTS = config['ALLOWED_HOSTS']
