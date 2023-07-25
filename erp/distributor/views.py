@@ -12,6 +12,8 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from django.views import View
 
+
+
 @login_required(login_url='home:process')
 def distributors(request):
 
