@@ -1,0 +1,12 @@
+DATABASES:
+  default:
+    ENGINE: django.db.backends.sqlite3
+    NAME: os.path.join(BASE_DIR, 'db.sqlite3')
+    # USER: your_database_user
+    # PASSWORD: your_database_password
+    # HOST: your_database_host  # Use 'localhost' if the database is on the same machine as Django
+    # PORT: your_database_port  # Default MySQL port is usually 3306
+    # OPTIONS:
+    #   # If you need to set additional MySQL options, you can specify them here
+    #   # For example:
+    #   autocommit: True
