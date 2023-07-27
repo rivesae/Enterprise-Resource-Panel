@@ -7,14 +7,14 @@
 <div class="cxs-container">
   <div class="row">
     <span><button class="cxs-btn-stat cxs-btn-alert-overview" onclick="window.location.href='{% url 'request:overview' %}';"> Back to Overview </button>
-      <h4>Approval of Purchase Order No: {{order.id}} </h4></span>
+      <h4>Approval of Purchase Order No: {{order.order_id}} </h4></span>
   </div>
   <div class="col-flex">
       <div class="col-6">
         <h5>{{order.distributor}}</h5>
         <h6>{{order.distributor.address}}</h6>
         <span>Document created: {{order.date_created}}</span>
-        {% endfor %}
+{% endfor %}
       </div>
       <div class="col-6">
         <div class="row-corrected">
@@ -60,16 +60,19 @@
   </div>
   <div class="col-flex">
       <div class="col-4">
-      
+        <div class="row-corrected" style="padding: 0; margin: 0;">
+          {% for z in req_order %}
+          {% load humanize %}
+          <label for=""><span style="font-weight: bold;">Summary:</span></label>
+          <p> This document has been submitted for approval by {{z.created.first_name}} {{z.created.last_name}} last {{z.update|naturaltime}}. This document now needs your attention to proceed.</p>
+          {% endfor %}
+        </div>
       </div>
       <div class="col-4">
         {% if items %}
         <div class="row-corrected">
-          <label for=""><span style="font-weight: bold;">Remarks:</label><br>
+          <label for=""><span style="font-weight: bold;">Remarks:</span></label><br>
           <textarea name="" id="" class="comment cxs-whole-input" placeholder="Type your comments here. The comments will be printed along with the document." disabled></textarea>
-        </div>
-        <div class="row-corrected">
-          <button type="submit" class="cxs-btn-stat cxs-btn-alert-edit">Add Comment</button>
         </div>
         {% else %}
         {% endif %}
@@ -123,7 +126,7 @@
               <form method="POST" action="{% url 'request:submit' order.id %}">
                 {% csrf_token %}
                 <div>
-                  <input type="text" value="Documented" name="status">
+                  <input type="text" value="Documented" name="status" hidden>
                   <button class="cxs-btn-stat cxs-btn-alert-approve cxs-btn-big cxs-btn-half-right">Approve and Send</button>
                 </div>
               </form>

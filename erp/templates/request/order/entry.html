@@ -7,14 +7,13 @@
 <div class="cxs-container">
   <div class="row">
     <span><button class="cxs-btn-stat cxs-btn-alert-overview" onclick="window.location.href='{% url 'request:overview' %}';"> Back to Overview </button>
-      <h4>Review of Purchase Order No: {{order.id}} </h4></span>
+      <h4>Review of Purchase Order No: {{order.order_id}} </h4></span>
   </div>
   <div class="col-flex">
       <div class="col-6">
         <h5>{{order.distributor}}</h5>
         <h6>{{order.distributor.address}}</h6>
         <span>Document created: {{order.date_created}}</span>
-        <span>Document created: {{now}}</span>
         {% endfor %}
       </div>
       <div class="col-6">
@@ -52,7 +51,13 @@
           <td>{{x.item}}</td>
           <td>{{x.qty}}</td>
           <td>{{x.package}}</td>
-          <td>₱ {{x.cost|intcomma}}</td>
+          <td>
+            ₱ {{x.cost|intcomma}}
+            {% if x.item.cost == x.cost %}
+            {% else %}
+             <sub>( ₱ {{x.item.cost|intcomma}} )</sub>
+            {% endif %}
+          </td>
           <td>₱ {{x.subtotal|intcomma}}</td>
           <td>{{x.date_created|naturaltime}}</td>
           <td>

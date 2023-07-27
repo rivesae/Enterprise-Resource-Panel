@@ -5,17 +5,19 @@ app_name = 'request'
 urlpatterns = [
     path('', views.index, name="overview"),
     path('form/', views.create_entry, name='create_entry'),
-    path('order/<int:id>/', views.redirect_entry, name='redirect_entry'),
+    path('?order=<uuid:uuid_str>.page.<str:str_distrib>', views.redirect_entry, name='redirect_entry'),
+    
+    
     path('select/', views.select_item, name='select_item'),
     path('costing/', views.costing, name='costing'),
-    path('order/<int:id>/active/<int:x_id>/', views.toggle_active, name='toggle_active'),
-    path('order/<int:id>/toggle-approve', views.toggle_approve, name='toggle_approve'),
-    path('order/<int:id>/delete', views.toggle_deactivate, name='toggle_deactivate'),
-    path('order/<int:id>/remarks', views.add_remarks, name='add_remarks'),
+    path('order/<uuid:uuid_str>/active/<uuid:uuid_str2>/', views.toggle_active, name='toggle_active'),
+    path('order/<uuid:uuid_str>/toggle-approve', views.toggle_approve, name='toggle_approve'),
+    path('order/<uuid:uuid_str>/delete', views.toggle_deactivate, name='toggle_deactivate'),
+    path('order/<uuid:uuid_str>/remarks', views.add_remarks, name='add_remarks'),
 
-    path('order/<int:id>/approve', views.approve, name='approve'),
-    path('order/<int:id>/toggle-edit', views.toggle_edit, name='toggle_edit'),
+    path('?order=<uuid:uuid_str>.page=approval', views.approve, name='approve'),
+    path('order/<uuid:uuid_str>/toggle-edit', views.toggle_edit, name='toggle_edit'),
 
-    path('order/<int:id>/submit', views.submit, name='submit'),
+    path('order/<uuid:uuid_str>/submit', views.submit, name='submit'),
     
 ]

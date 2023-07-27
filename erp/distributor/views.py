@@ -36,14 +36,15 @@ def distributors(request):
     return render(request, 'distributor/index.html' , context)
 
 @login_required(login_url='home:process')
-def detail(request, distrib_id):
+def detail(request, uuid_str):
     # request try for id of models.Distributor
     try:
-        distrib = Distributor.objects.get(pk=distrib_id)
+        distrib = Distributor.objects.get(id=uuid_str)
 
         # parent and child between Distributor and Brand models get from id @ try
         items = distrib.item_set.all()
         brands = distrib.brand_set.all()
+        print(brands)
 
         form_search = Search(request.GET)
         query = request.GET.get('search', '')

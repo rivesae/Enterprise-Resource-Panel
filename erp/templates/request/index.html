@@ -25,7 +25,7 @@
                     {% for x in orders %}
                     {% load humanize %}
                     <tr>
-                      <td>{{x.id}}</a></td>
+                      <td>{{x.order_id}}</a></td>
                       <td>{{x.distributor}}</td>
                       {% if x.update is None %}
                       <td>{{x.date_created|naturaltime}}</td>
@@ -34,7 +34,7 @@
                       {% endif %}
                       <td>
                         {% if x.update is None %}
-                        <button class="cxs-btn-stat cxs-btn-alert-edit" onclick="window.location.href='{% url 'request:redirect_entry' x.id %}';">Edit</button>
+                        <button class="cxs-btn-stat cxs-btn-alert-edit" onclick="window.location.href='{% url 'request:redirect_entry' x.id x.distributor %}';">Edit</button>
                         {% else %}
                         <button class="cxs-btn-stat cxs-btn-alert-approve" onclick="window.location.href='{% url 'request:approve' x.id %}';">Approve</button>
                         {% endif %}

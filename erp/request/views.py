@@ -1,25 +1,16 @@
-import io
-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, NoReverseMatch
-from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.utils import timezone
-
-from django.core.mail import EmailMessage
-from django.template.loader import get_template
 
 # Importing forms
 from .forms import OrderForm, ItemForm
-
-from datetime import timedelta
 
 # Imported models
 from .models import RequestItem, RequestOrder
 from distributor.models import Distributor, Item, Brand
 
-
 def index(request):
-    orders = RequestOrder.objects.filter(active=1)
+    orders = RequestOrder.objects.filter(active=1).filter(date_documented=None)
+    print(orders)
     context = {
         'orders' : orders,
                }
@@ -33,8 +24,11 @@ def create_entry(request):
             instance.created = request.user
             instance = form.save()  # Save the new entry
 
-            order_id = instance.id
-            return redirect('request:redirect_entry', id=order_id)
+            var_uuid = instance.id
+            var_distrib = instance.distributor
+            
+            print(var_uuid)
+            return redirect('request:redirect_entry', uuid_str=str(var_uuid), str_distrib=var_distrib )
     else:
         form = OrderForm()
     context = {
@@ -43,26 +37,26 @@ def create_entry(request):
     return render(request, 'request/create.html', context)
 
 # Creating Purchase Orders to Distributors
-def redirect_entry(request, id):
-    req_order = RequestOrder.objects.filter(id=id)
-    items = RequestItem.objects.filter(request_order=id).filter(active=1)
+def redirect_entry(request, uuid_str, str_distrib):
+    req_order = RequestOrder.objects.filter(id=uuid_str)
+    items = RequestItem.objects.filter(request_order=uuid_str).filter(active=1)
     for main_req in req_order:
         brand_get = Brand.objects.filter(distributor_id=main_req.distributor_id)
         if request.method == 'POST':
-            
-            tz_error = timezone.localtime(timezone.now())
-            now = tz_error + timedelta(hours=8)
-            
             item_value = request.POST['item_value']
             qty_value = request.POST['qty_value']
             cost_value = request.POST['cost_value']
             package = request.POST['package']
+            user_create = request.user
+            
+            print(request.user)
+            
             target_instance = RequestItem(item_id=item_value, 
                                           qty=qty_value,
                                           cost=cost_value,
                                           package=package,
-                                          request_order_id=id,
-                                          date_created=now,
+                                          request_order_id=uuid_str,
+                                          created = user_create,
                                           )
             target_instance.save()
     for item in items:
@@ -108,20 +102,21 @@ def costing(request):
                }
     return render(request, 'request/order/_partials/_costing.html', context)
 
-def toggle_deactivate(request, id):
-    target_instance = get_object_or_404(RequestOrder, id=id)
+def toggle_deactivate(request, uuid_str):
+    target_instance = get_object_or_404(RequestOrder, id=uuid_str)
     if request.method == 'POST':
         target_instance.sent_to = None
         target_instance.delivery_dated = None
-        target_instance.update = now
-        target_instance.date_deleted = now
+        target_instance.update = timezone.now()
+        target_instance.date_deleted = timezone.now()
+        target_instance.date_documented = timezone.now()
         target_instance.active = 0
         target_instance.deleted_id = request.user
         target_instance.status = "Deleted"
         target_instance.save()
     return redirect('request:overview')
 
-def add_remarks(request, id):
+def add_remarks(request, uuid_str):
     target_instance = get_object_or_404(RequestOrder, id=id)
     if request.method == 'POST':
         remark = request.POST['remarks']
@@ -132,26 +127,28 @@ def add_remarks(request, id):
 
 # Togglers for /order/<int:id>/
 # Deleting items in table
-def toggle_active(request, x_id, id):
+def toggle_active(request, uuid_str, uuid_str2):
     if request.method == 'POST':
-        item = RequestItem.objects.get(pk=x_id)
-        item.delete_date = now
+        item = RequestItem.objects.get(pk=uuid_str2)
+        item.delete_date = timezone.now()
+        item.deleted_id = request.user
+        item.status = "Undocumented"
         item.active = not item.active
         item.save()
-    return redirect('request:redirect_entry', id=id)
+    return redirect('request:redirect_entry', uuid_str, uuid_str2)
 
 # Toggle approve signed with update date
-def toggle_approve(request, id):
+def toggle_approve(request, uuid_str):
     if request.method == 'POST':
-        approve = RequestOrder.objects.get(pk=id)
-        approve.update = now
+        approve = RequestOrder.objects.get(pk=uuid_str)
+        approve.update = timezone.now()
         approve.save()
     return redirect('request:overview')
 
 # For Approving a Purchase Order /order/<int:id>/approve
-def approve(request, id):
-    req_order = RequestOrder.objects.filter(id=id)
-    items = RequestItem.objects.filter(request_order=id).filter(active=1)
+def approve(request, uuid_str):
+    req_order = RequestOrder.objects.filter(id=uuid_str)
+    items = RequestItem.objects.filter(request_order=uuid_str).filter(active=1)
     for main_req in req_order:
         brand_get = Brand.objects.filter(distributor_id=main_req.distributor_id)
 
@@ -174,18 +171,18 @@ def approve(request, id):
     return render(request, 'request/order/approve.html', context)
 
 # Toggler back to edit /order/<int:id>/
-def toggle_edit(request, id):
+def toggle_edit(request, uuid_str):
     if request.method == 'POST':
-        approve = RequestOrder.objects.get(pk=id)
+        approve = RequestOrder.objects.get(pk=uuid_str)
         approve.update = None
         approve.save()
     return redirect('request:overview')
 
-def submit(request, id):
-    target_instance = get_object_or_404(RequestOrder, id=id)
+def submit(request, uuid_str):
+    target_instance = get_object_or_404(RequestOrder, id=uuid_str)
     if request.method == 'POST':
-        target_instance.update = now
-        target_instance.date_documented = now
+        target_instance.update = timezone.now()
+        target_instance.date_documented = timezone.now()
         target_instance.approved_id = request.user
         target_instance.status = request.POST['status']
         target_instance.save()

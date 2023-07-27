@@ -33,10 +33,7 @@ DEBUG = env('DEBUG', default=False)
 # with open(os.path.join(BASE_DIR, 'secret.yaml')) as config_file:
 #     config = yaml.load(config_file, Loader=yaml.FullLoader)
 
-ALLOWED_HOSTS = [
-    'app.ziondiagnosticssolutions.com', # For production; can't seem to include as environment variable
-    '127.0.0.1',                        # For development; can't seem to include as environment variable
-                ]
+ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
 
 # Application definition
 
@@ -58,6 +55,7 @@ INSTALLED_APPS = [
     'inventory',
     'order',
     'request',
+    'document',
     
     'django.contrib.humanize', # Built-in Django, just need to be activated
     
@@ -160,3 +158,8 @@ STATIC_ROOT = env('STATIC_ROOT')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+FILTERS = {
+    'tin': 'distributor.custom_filters.tin',
+}

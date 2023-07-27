@@ -3,7 +3,9 @@
 # Git ignore database files and yaml
 /erp/secret.yaml
 /erp/db.sqlite3
+/erp/erp.sqlite3
 /erp/secret.env
+/erp/documentations
 
 # Ignore all __pycache__
 /erp/accounting/__pycache__
@@ -17,3 +19,28 @@
 /erp/order/__pycache__
 /erp/people/__pycache__
 /erp/request/__pycache__
+
+/erp/accounting/templatetags/__pycache__
+/erp/analytic/templatetags/__pycache__
+/erp/core/templatetags/__pycache__
+/erp/customer/templatetags/__pycache__
+/erp/distributor/templatetags/__pycache__
+/erp/erp/templatetags/__pycache__
+/erp/home/templatetags/__pycache__
+/erp/inventory/templatetags/__pycache__
+/erp/order/templatetags/__pycache__
+/erp/people/templatetags/__pycache__
+/erp/request/templatetags/__pycache__
+
+# Ignore all developers migrations
+/erp/accounting/migrations
+/erp/analytic/migrations
+/erp/core/migrations
+/erp/customer/migrations
+/erp/distributor/migrations
+/erp/erp/migrations
+/erp/home/migrations
+/erp/inventory/migrations
+/erp/order/migrations
+/erp/people/migrations
+/erp/request/migrations

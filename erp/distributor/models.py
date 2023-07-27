@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 
@@ -8,6 +9,7 @@ from django.utils import timezone
 # Basic models for Items - Distributor
 
 class Distributor(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     tin = models.CharField(max_length=13, null=True, default="0000000000000")
@@ -18,6 +20,7 @@ class Distributor(models.Model):
         return self.name
 
 class Brand(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
     distributor = models.ForeignKey(Distributor, on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
@@ -53,6 +56,7 @@ class Item(models.Model):
         ("IA", "Vitros Immunoassay"),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=40)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)

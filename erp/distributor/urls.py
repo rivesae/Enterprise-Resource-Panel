@@ -4,5 +4,5 @@ from . import views
 app_name = 'distrib'
 urlpatterns = [
     path('', views.distributors, name='overview'),
-    path('<int:distrib_id>/', views.detail, name='detail'),
+    path('<uuid:uuid_str>', views.detail, name='detail'),
 ]

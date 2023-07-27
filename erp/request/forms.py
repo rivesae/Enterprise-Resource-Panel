@@ -14,7 +14,8 @@ class OrderForm(forms.ModelForm):
             'distributor',
             'discount',
         ]
-        exclude = ('created',)
+        exclude = ('created', 'id')
+        
 class ItemForm(forms.ModelForm):
     class Meta:
         model = RequestItem
